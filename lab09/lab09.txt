@@ -164,3 +164,111 @@ KING             7839
 
 Question -- Why can't we do LEFT join emp as m or FROM emp as e?
 
+8. 
+SQL> SELECT 
+  2      e.DEPTNO AS "Department",
+  3      e.ENAME AS "Employee",
+  4      c.ENAME AS "Colleague"
+  5  FROM emp e
+  6  LEFT JOIN emp c
+  7      ON e.deptno = c.deptno
+  8     AND e.ENAME <> c.ENAME
+  9  ;
+
+Department Employee   Colleague
+---------- ---------- ----------
+        10 CLARK      KING
+        10 MILLER     KING
+        30 MARTIN     BLAKE
+        30 ALLEN      BLAKE
+        30 TURNER     BLAKE
+        30 JAMES      BLAKE
+        30 WARD       BLAKE
+        10 KING       CLARK
+        10 MILLER     CLARK
+        20 FORD       JONES
+        20 SMITH      JONES
+56 rows selected.
+
+9.
+SELECT 
+    e.ename AS "Name", 
+    e.job AS "Job", 
+    d.dname AS "Department Name", 
+    e.sal AS "Salary", 
+    s.grade AS "Grade"
+FROM 
+    emp e
+JOIN 
+    dept d ON e.deptno = d.deptno
+JOIN 
+    salgrade s ON e.sal BETWEEN s.losal AND s.hisal;
+
+    Name       Job       Department Nam     Salary      Grade
+---------- --------- -------------- ---------- ----------
+KING       PRESIDENT ACCOUNTING           5000          5
+BLAKE      MANAGER   SALES                2850          4
+CLARK      MANAGER   ACCOUNTING           2450          4
+JONES      MANAGER   RESEARCH             2975          4
+MARTIN     SALESMAN  SALES                1250          2
+ALLEN      SALESMAN  SALES                1600          3
+TURNER     SALESMAN  SALES                1500          3
+JAMES      CLERK     SALES                 950          1
+WARD       SALESMAN  SALES                1250          2
+FORD       ANALYST   RESEARCH             3000          4
+SMITH      CLERK     RESEARCH              800          1
+
+Name       Job       Department Nam     Salary      Grade
+---------- --------- -------------- ---------- ----------
+SCOTT      ANALYST   RESEARCH             3000          4
+ADAMS      CLERK     RESEARCH             1100          1
+MILLER     CLERK     ACCOUNTING           1300          2
+
+
+
+10.
+
+SELECT ename, hiredate
+FROM emp
+WHERE hiredate > (SELECT hiredate FROM emp WHERE ename = 'BLAKE');
+
+SQL> @'c:\Users\jagat\Documents\GitHub\DBA-Hw\lab09\ten.sql'
+
+ENAME      HIREDATE
+---------- ---------
+KING       17-NOV-81
+CLARK      09-JUN-81
+MARTIN     28-SEP-81
+TURNER     08-SEP-81
+JAMES      03-DEC-81
+FORD       03-DEC-81
+SCOTT      09-DEC-82
+ADAMS      12-JAN-83
+MILLER     23-JAN-82
+
+9 rows selected.
+
+11.
+
+SELECT 
+    e.ename AS "Employee",
+    e.hiredate AS "Emp Hiredate",
+    m.ename AS "Manager",
+    m.hiredate AS "Mgr Hiredate"
+FROM emp e
+JOIN emp m 
+    ON e.mgr = m.empno
+WHERE e.hiredate < m.hiredate;
+
+
+
+Employee   Emp Hired Manager    Mgr Hired
+---------- --------- ---------- ---------
+BLAKE      01-MAY-81 KING       17-NOV-81
+CLARK      09-JUN-81 KING       17-NOV-81
+JONES      02-APR-81 KING       17-NOV-81
+ALLEN      20-FEB-81 BLAKE      01-MAY-81
+WARD       22-FEB-81 BLAKE      01-MAY-81
+SMITH      17-DEC-80 FORD       03-DEC-81
+
+6 rows selected.
