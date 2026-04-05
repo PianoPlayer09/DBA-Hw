@@ -24,3 +24,62 @@ ADAMS              20 RESEARCH
 MILLER             10 ACCOUNTING
 
 14 rows selected.
+
+
+2.SELECT Distinct JOB, LOC 
+FROM emp
+INNER JOIN dept
+ON emp.deptno = dept.deptno
+WHERE emp.deptno =30 ;
+
+
+JOB       LOC
+--------- -------------
+SALESMAN  CHICAGO
+MANAGER   CHICAGO
+CLERK     CHICAGO
+
+
+
+3.
+SELECT ename, dname, LOC
+FROM emp
+INNER JOIN dept
+USING(deptno)
+WHERE dept.dname = 'SALES'; 
+
+
+
+
+ENAME      DNAME          LOC
+---------- -------------- -------------
+BLAKE      SALES          CHICAGO
+MARTIN     SALES          CHICAGO
+ALLEN      SALES          CHICAGO
+TURNER     SALES          CHICAGO
+JAMES      SALES          CHICAGO
+WARD       SALES          CHICAGO
+
+6 rows selected.
+
+
+Question 4:
+
+SQL> SELECT ename, dname
+  2  FROM emp
+  3  INNER JOIN dept
+  4  USING(deptno)
+  5  WHERE ename LIKE '%A%';
+
+
+  ENAME      DNAME
+---------- --------------
+CLARK      ACCOUNTING
+ADAMS      RESEARCH
+BLAKE      SALES
+MARTIN     SALES
+ALLEN      SALES
+JAMES      SALES
+WARD       SALES
+
+7 rows selected.
