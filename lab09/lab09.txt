@@ -1,0 +1,26 @@
+1. SQL> SELECT ename, emp.deptno AS de, dept.dname 
+  2  FROM emp
+  3  INNER JOIN dept
+  4  ON emp.deptno = dept.deptno;
+
+ENAME              DE DNAME
+---------- ---------- --------------
+KING               10 ACCOUNTING
+BLAKE              30 SALES
+CLARK              10 ACCOUNTING
+JONES              20 RESEARCH
+MARTIN             30 SALES
+ALLEN              30 SALES
+TURNER             30 SALES
+JAMES              30 SALES
+WARD               30 SALES
+FORD               20 RESEARCH
+SMITH              20 RESEARCH
+
+ENAME              DE DNAME
+---------- ---------- --------------
+SCOTT              20 RESEARCH
+ADAMS              20 RESEARCH
+MILLER             10 ACCOUNTING
+
+14 rows selected.
