@@ -83,3 +83,84 @@ JAMES      SALES
 WARD       SALES
 
 7 rows selected.
+
+Question 5:
+SQL> SELECT ename,JOB, deptno AS deptno, dept.dname
+  2  FROM emp
+  3  INNER JOIN dept
+  4  USING(deptno)
+  5  WHERE LOC='DALLAS';
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+JONES      MANAGER           20 RESEARCH
+FORD       ANALYST           20 RESEARCH
+SMITH      CLERK             20 RESEARCH
+SCOTT      ANALYST           20 RESEARCH
+ADAMS      CLERK             20 RESEARCH
+
+
+6.
+
+SQL> SELECT 
+  2       e.ENAME AS "Employee",
+  3      e.EMPNO AS "Emp#",
+  4      m.ENAME AS "Manager",
+  5      m.EMPNO AS "Mgr#"
+  6  FROM emp  e
+  7  LEFT JOIN emp  m
+  8      ON e.mgr = m.empno
+  9      WHERE e.mgr IS NOT NULL;
+
+Employee         Emp# Manager          Mgr#
+---------- ---------- ---------- ----------
+BLAKE            7698 KING             7839
+CLARK            7782 KING             7839
+JONES            7566 KING             7839
+MARTIN           7654 BLAKE            7698
+ALLEN            7499 BLAKE            7698
+TURNER           7844 BLAKE            7698
+JAMES            7900 BLAKE            7698
+WARD             7521 BLAKE            7698
+MILLER           7934 CLARK            7782
+FORD             7902 JONES            7566
+SCOTT            7788 JONES            7566
+
+Employee         Emp# Manager          Mgr#
+---------- ---------- ---------- ----------
+SMITH            7369 FORD             7902
+ADAMS            7876 SCOTT            7788
+
+7.
+SQL> SELECT
+  2       e.ENAME AS "Employee",
+  3      e.EMPNO AS "Emp#",
+  4      m.ENAME AS "Manager",
+  5      m.EMPNO AS "Mgr#"
+  6  FROM emp  e
+  7  LEFT JOIN emp  m
+  8      ON e.mgr = m.empno;
+
+Employee         Emp# Manager          Mgr#
+---------- ---------- ---------- ----------
+BLAKE            7698 KING             7839
+CLARK            7782 KING             7839
+JONES            7566 KING             7839
+MARTIN           7654 BLAKE            7698
+ALLEN            7499 BLAKE            7698
+TURNER           7844 BLAKE            7698
+JAMES            7900 BLAKE            7698
+WARD             7521 BLAKE            7698
+MILLER           7934 CLARK            7782
+FORD             7902 JONES            7566
+SCOTT            7788 JONES            7566
+
+Employee         Emp# Manager          Mgr#
+---------- ---------- ---------- ----------
+SMITH            7369 FORD             7902
+ADAMS            7876 SCOTT            7788
+KING             7839
+
+
+Question -- Why can't we do LEFT join emp as m or FROM emp as e?
+
