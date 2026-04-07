@@ -1,0 +1,224 @@
+1.
+SELECT GETDATE(); -- Threw error,
+so I did:
+
+SELECT SYSDATE AS "Date" FROM dual;
+Date
+---------
+06-APR-26
+
+2.
+SQL> SELECT empno, ename, sal,
+  2      sal * 1.15 AS "new sal"
+  3  FROM emp;
+
+     EMPNO ENAME             SAL    new sal
+---------- ---------- ---------- ----------
+      7839 KING             5000       5750
+      7698 BLAKE            2850     3277.5
+      7782 CLARK            2450     2817.5
+      7566 JONES            2975    3421.25
+
+
+3.
+
+SQL> SELECT empno, ename, sal,
+  2      sal * 1.15 AS "new sal",
+  3      sal * 1.15 -sal AS "increase"
+  4  FROM emp;
+
+     EMPNO ENAME             SAL    new sal   increase
+---------- ---------- ---------- ---------- ----------
+      7839 KING             5000       5750        750
+      7698 BLAKE            2850     3277.5      427.5
+      7782 CLARK            2450     2817.5      367.5
+      7566 JONES            2975    3421.25     446.25
+      7654 MARTIN           1250     1437.5      187.5
+      7499 ALLEN            1600       1840        240
+      7844 TURNER           1500       1725        225
+      7900 JAMES             950     1092.5      142.5
+      7521 WARD             1250     1437.5      187.5
+      7902 FORD             3000       3450        450
+      7369 SMITH             800        920        120
+14 rows selected.
+
+4.
+SELECT ename, hiredate,
+FORMAT(DATEADD(month, 6, hiredate), 'dddd, the dd of MMMM, yyyy') AS review
+FROM emp; --- Didn't work on Oracle so I did:
+SELECT ename, 
+       hiredate, 
+       TO_CHAR(ADD_MONTHS(hiredate, 6), 'fmDay, "the" dd "of" Month, yyyy') AS review
+FROM emp;
+
+
+ENAME      HIREDATE
+---------- ---------
+REVIEW
+--------------------------------------------------------------------------------
+KING       17-NOV-81
+Monday, the 17 of May, 1982
+
+BLAKE      01-MAY-81
+Sunday, the 1 of November, 1981
+
+5.
+SQL> SELECT ename, 
+  2         ROUND(MONTHS_BETWEEN(SYSDATE, hiredate)) AS months_worked
+  3  FROM emp;
+
+ENAME      MONTHS_WORKED
+---------- -------------
+KING                 533
+BLAKE                539
+
+6.
+SQL> SELECT ename || ' earns $' || ROUND(sal) || ' monthly but wants $' || ROUND(sal*3) || '.' AS "Dream Salaries"
+  2  FROM emp;
+
+Dream Salaries
+--------------------------------------------------------------------------------
+KING earns $5000 monthly but wants $15000.
+BLAKE earns $2850 monthly but wants $8550.
+CLARK earns $2450 monthly but wants $7350.
+
+7.
+SQL> SELECT 
+  2      ename, 
+  3      LPAD(sal, 15, '$') AS SALARY
+  4  FROM
+  5      emp;
+
+ENAME      SALARY
+---------- ------------------------------------------------------------
+KING       $$$$$$$$$$$5000
+BLAKE      $$$$$$$$$$$2850
+CLARK      $$$$$$$$$$$2450
+
+8.
+SQL> SELECT INITCAP(ename) as name,
+  2  LENGTH(ename) as name_length
+  3  FROM emp;
+
+NAME       NAME_LENGTH
+---------- -----------
+King                 4
+Blake                5
+Clark                5
+
+9.
+SELECT ename, 
+       ROUND(MONTHS_BETWEEN(SYSDATE, hiredate)) AS months_worked
+FROM emp; 
+order by  DATENAME(weekday, hiredate)
+          *
+ERROR at line 3:
+ORA-00904: "DATENAME": invalid identifier
+--So I did:
+SQL> SELECT ename, hiredate, To_Char( hiredate, 'DAY') AS "day"
+  2  FROM emp
+  3  ORDER BY TO_CHAR(hiredate, 'D')
+  4  ;
+
+ENAME      HIREDATE  day
+---------- --------- ------------------------------------
+WARD       22-FEB-81 SUNDAY
+MARTIN     28-SEP-81 MONDAY
+CLARK      09-JUN-81 TUESDAY
+
+10.
+SQL> SELECT ename, hiredate, DATENAME(weekday, hiredate) AS "day"
+  2  FROM emp
+  3  ORDER BY TO_CHAR(hiredate, 'D')
+  4  ;
+SELECT ename, hiredate, DATENAME(weekday, hiredate) AS "day"
+                        *
+ERROR at line 1:
+ORA-00904: "DATENAME": invalid identifier
+
+
+SQL> SELECT ename, hiredate, To_Char( hiredate, 'D') AS "day"
+  2  FROM emp
+  3  ORDER BY TO_CHAR(hiredate, 'D')
+  4
+SQL> SELECT ename, hiredate, To_Char( hiredate, 'D') AS "day"
+  2  FROM emp
+  3  ORDER BY TO_CHAR(hiredate, 'D')
+  4  ;
+
+ENAME      HIREDATE  d
+---------- --------- -
+WARD       22-FEB-81 1
+MARTIN     28-SEP-81 2
+CLARK      09-JUN-81 3
+KING       17-NOV-81 3
+TURNER     08-SEP-81 3
+ADAMS      12-JAN-83 4
+SMITH      17-DEC-80 4
+JAMES      03-DEC-81 5
+FORD       03-DEC-81 5
+SCOTT      09-DEC-82 5
+JONES      02-APR-81 5
+
+ENAME      HIREDATE  d
+---------- --------- -
+ALLEN      20-FEB-81 6
+BLAKE      01-MAY-81 6
+MILLER     23-JAN-82 7
+
+14 rows selected.
+
+SQL> SELECT ename, hiredate, To_Char( hiredate, 'DAY') AS "day"
+  2  FROM emp
+  3  ORDER BY TO_CHAR(hiredate, 'D')
+  4
+SQL> SELECT ename, hiredate, To_Char( hiredate, 'DAY') AS "day"
+  2  FROM emp
+  3  ORDER BY TO_CHAR(hiredate, 'D')
+  4  ;
+
+ENAME      HIREDATE  day
+---------- --------- ------------------------------------
+WARD       22-FEB-81 SUNDAY
+MARTIN     28-SEP-81 MONDAY
+CLARK      09-JUN-81 TUESDAY
+KING       17-NOV-81 TUESDAY
+TURNER     08-SEP-81 TUESDAY
+ADAMS      12-JAN-83 WEDNESDAY
+SMITH      17-DEC-80 WEDNESDAY
+JAMES      03-DEC-81 THURSDAY
+FORD       03-DEC-81 THURSDAY
+SCOTT      09-DEC-82 THURSDAY
+JONES      02-APR-81 THURSDAY
+
+ENAME      HIREDATE  day
+---------- --------- ------------------------------------
+ALLEN      20-FEB-81 FRIDAY
+BLAKE      01-MAY-81 FRIDAY
+MILLER     23-JAN-82 SATURDAY
+
+14 rows selected.
+
+SQL> SELECT ename, 
+  2         CASE WHEN COMM IS NOT NULL THEN COMM ELSE 'no commission' END AS commission 
+  3  FROM emp;
+       CASE WHEN COMM IS NOT NULL THEN COMM ELSE 'no commission' END AS commission
+                                                 *
+ERROR at line 2:
+ORA-00932: inconsistent datatypes: expected NUMBER got CHAR
+
+
+SQL> SELECT ename, 
+  2         CASE 
+  3           WHEN COMM IS NOT NULL THEN TO_CHAR(COMM)
+  4           ELSE 'no commission'
+  5         END AS commission
+  6  FROM emp;
+
+ENAME      COMMISSION
+---------- ----------------------------------------
+KING       no commission
+
+
+
+Didn't have time to the other ones :(
