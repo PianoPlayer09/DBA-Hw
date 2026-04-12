@@ -1,0 +1,6 @@
+SELECT mgr, MIN(Sal) 
+FROM emp
+WHERE mgr IS NOT NULL
+GROUP BY mgr
+HAVING MIN(Sal) > 1000
+ORDER BY MIN(Sal)  DESC;

@@ -1,0 +1,101 @@
+1. True
+2. false
+3. True
+
+4. 
+SQL> SELECT MAX(SAL) AS maximum, MIN(SAL) AS minimum, SUM(Sal) as Sum, ROUND(AVG(sal),0) AS average
+  2  FROM emp;
+
+   MAXIMUM    MINIMUM        SUM    AVERAGE
+---------- ---------- ---------- ----------
+      5000        800      29025       2073
+
+5.
+SQL> SELECT JOB, MAX(SAL) AS maximum, MIN(SAL) AS minimum, SUM(Sal) as Sum, ROUND(AVG(sal),0) AS average
+  2  FROM emp
+  3  GROUP BY JOB;
+
+JOB          MAXIMUM    MINIMUM        SUM    AVERAGE
+--------- ---------- ---------- ---------- ----------
+SALESMAN        1600       1250       5600       1400
+CLERK           1300        800       4150       1038
+ANALYST         3000       3000       6000       3000
+MANAGER         2975       2450       8275       2758
+PRESIDENT       5000       5000       5000       5000      
+
+6.
+SQL> SELECT JOB, COUNT(*)
+  2  FROM emp
+  3  GROUP BY JOB;
+
+JOB         COUNT(*)
+--------- ----------
+SALESMAN           4
+CLERK              4
+ANALYST            2
+MANAGER            3
+PRESIDENT          1
+
+7.
+SQL> SELECT COUNT(*) as "Number of Managers"
+  2  FROM emp
+  3  WHERE JOB = 'MANAGER';
+
+Number of Managers
+------------------
+                 3
+8.
+SQL> SELECT max(sal) - min(sal) AS "Difference"
+  2  FROM emp;
+
+Difference
+----------
+      4200
+9.
+
+SQL> SELECT mgr, MIN(Sal) 
+  2  FROM emp
+  3  WHERE mgr IS NOT NULL
+  4  GROUP BY mgr
+  5  HAVING MIN(Sal) > 1000
+  6  ORDER BY MIN(Sal)  DESC;
+
+       MGR   MIN(SAL)
+---------- ----------
+      7566       3000
+      7839       2450
+      7782       1300
+      7788       1100
+
+10.
+QL> SELECT d.dname , 
+  2  d.loc ,
+  3  COUNT(e.empno) as "Number of Employees",
+  4  ROUND(avg(e.sal),2) as "Salary"
+  5  FROM dept d, emp e
+  6  WHERE d.deptno = e.deptno
+  7  GROUP BY d.dname, d.loc
+  8  ORDER BY avg(e.sal) ASC;
+
+DNAME          LOC           Number of Employees     Salary
+-------------- ------------- ------------------- ----------
+SALES          CHICAGO                         6    1566.67
+RESEARCH       DALLAS                          5       2175
+ACCOUNTING     NEW YORK                        3    2916.67
+
+
+11.
+Used some syntax help - https://www.w3schools.com/sql/sql_case.asp
+
+SQL> SELECT COUNT(*) AS "Total",
+  2      SUM(CASE WHEN TO_CHAR(hiredate, 'YYYY') = '1980' THEN 1 ELSE 0 END) AS "1980",
+  3      SUM(CASE WHEN TO_CHAR(hiredate, 'YYYY') = '1981' THEN 1 ELSE 0 END) AS "1981",
+  4      SUM(CASE WHEN TO_CHAR(hiredate, 'YYYY') = '1982' THEN 1 ELSE 0 END) AS "1982",
+  5      SUM(CASE WHEN TO_CHAR(hiredate, 'YYYY') = '1983' THEN 1 ELSE 0 END) AS "1983"
+  6  FROM emp;
+
+     Total       1980       1981       1982       1983
+---------- ---------- ---------- ---------- ----------
+        14          1         10          2          1
+
+SQL>    
